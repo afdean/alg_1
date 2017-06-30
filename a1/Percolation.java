@@ -1,5 +1,3 @@
-import edu.princeton.cs.algs4.StdRandom;
-import edu.princeton.cs.algs4.StdStats;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
@@ -44,10 +42,24 @@ public class Percolation {
         grid[row - 1][col - 1] = open;
         openAmount++;
 
-        //Make unions around surrounding entries
-
-        //Make unions at virtual's if applicable
-        if (row == 0) {
+        //Connect up
+        if (row > 1) {
+            wquf.union(index, index - size);
+        }
+        //Connect down
+        if (row < size) {
+            wquf.union(index, index + size);
+        }
+        //Connect left
+        if (col > 1) {
+            wquf.union(index, index - 1);
+        }
+        //Connect right
+        if (col < size) {
+            wquf.union(index, index + 1);
+        }
+        //Connect virtuals
+        if (row == 1) {
             wquf.union(0, index);
         } else if (row == size) {
             wquf.union(index, (size * size) + 1);
