@@ -40,18 +40,17 @@ public class Percolation {
     public void open(int row, int col) {
         checkValidInput(row);
         checkValidInput(col);
-        row = row - 1;
-        col = col - 1;
         int index = getArrayIndex(row, col);
-        grid[row][col] = open;
+        grid[row - 1][col - 1] = open;
         openAmount++;
+
         //Make unions around surrounding entries
 
         //Make unions at virtual's if applicable
         if (row == 0) {
             wquf.union(0, index);
-        } else if (row == size - 1) {
-            wquf.union(index, size^2 + 1);
+        } else if (row == size) {
+            wquf.union(index, (size * size) + 1);
         }
     }
 
@@ -59,9 +58,7 @@ public class Percolation {
     public boolean isOpen(int row, int col) {
         checkValidInput(row);
         checkValidInput(col);
-        row = row - 1;
-        col = col - 1;
-        if (grid[row][col] == open) {
+        if (grid[row - 1][col - 1] == open) {
             return true;
         } else {
             return false;
@@ -72,8 +69,6 @@ public class Percolation {
     public boolean isFull(int row, int col) {
         checkValidInput(row);
         checkValidInput(col);
-        row = row - 1;
-        col = col - 1;
         int index = getArrayIndex(row, col);
         if (wquf.connected(0, index)) {
             return true;
@@ -98,18 +93,18 @@ public class Percolation {
     }
 
     // Should argument be thrown?
-    public boolean checkValidInput(int input) {
-        if (input < 1 | input > size) {
+    public boolean checkValidInput(int index) {
+        if (index < 1 | index > size) {
             throw new IllegalArgumentException();
             return false;
         }
         return true;
     }
 
-    //Takes 0 based array entries and returns what equivalent entry
+    //Takes row col inputs from functions and returns what equivalent entry
     //should be for wquf
     public int getArrayIndex(int row, int col) {
-        int index = (row * size) + col + 1;
+        int index = ((row - 1) * size) + col;
         return index;
     }
 
