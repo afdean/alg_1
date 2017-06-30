@@ -84,12 +84,17 @@ public class PercolationStats {
 
     // test client (described below)
     public static void main(String[] args) {
-        int n;
-        int t;
+        // int n;
+        // int t;
         if (args.length == 2) {
             try {
-                n = Integer.parseInt(args[0]);
-                t = Integer.parseInt(args[1]);
+                int n = Integer.parseInt(args[0]);
+                int t = Integer.parseInt(args[1]);
+                PercolationStats exp = new PercolationStats(n, t);
+                System.out.println("mean                    = " + exp.mean());
+                System.out.println("stddev                    = " + exp.stddev());
+                System.out.println("95% confidence interval = ["
+                    + exp.confidenceLo() + ", " + exp.confidenceHi() + "]");
             } catch (NumberFormatException e) {
                 System.err.println("Argument" + args[0] + " must be an integer.");
                 System.exit(1);
@@ -97,10 +102,6 @@ public class PercolationStats {
         } else {
             throw new IllegalArgumentException();
         }
-        PercolationStats exp = new PercolationStats(n, t);
-        System.out.println("mean                    = " + exp.mean());
-        System.out.println("stddev                    = " + exp.stddev());
-        System.out.println("95% confidence interval = ["
-            + exp.confidenceLo() + ", " + exp.confidenceHi() + "]");
+
     }
 }

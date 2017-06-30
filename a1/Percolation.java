@@ -108,7 +108,6 @@ public class Percolation {
     public boolean checkValidInput(int index) {
         if (index < 1 | index > size) {
             throw new IllegalArgumentException();
-            return false;
         }
         return true;
     }
