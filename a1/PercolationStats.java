@@ -6,7 +6,7 @@ public class PercolationStats {
     //Size of n in grid
     private final int size;
     private final int trials;
-    //Fraction of open sites in computational experiment t (indexed at 0)
+    //Fraction of open sites in computational exp t (indexed at 0)
     private double[] fractionOpened;
 
     //Experiment results
@@ -15,7 +15,7 @@ public class PercolationStats {
     private double confidenceLo;
     private double confidenceHi;
 
-    // perform trials independent experiments on an n-by-n grid
+    // perform trials independent exps on an n-by-n grid
     public PercolationStats(int n, int trials) {
         if (n < 1 | trials < 1) {
             throw new IllegalArgumentException();
@@ -31,6 +31,7 @@ public class PercolationStats {
         int col;
         boolean percFlag;
         boolean openFlag;
+
         //Run the loop trials amount of times
         for (int i = 0; i < trials; i++) {
             perc = new Percolation(size);
@@ -61,32 +62,45 @@ public class PercolationStats {
         this.confidenceHi = confidenceHi();
     }
 
-
     // sample mean of percolation threshold
     public double mean() {
-        //Use their library
         return StdStats.mean(fractionOpened);
     }
 
     // sample standard deviation of percolation threshold
     public double stddev() {
-        //Use their library
         return StdStats.stddev(fractionOpened);
     }
 
     // low  endpoint of 95% confidence interval
     public double confidenceLo() {
-        return 0.0;
+        return this.mean - (1.96 * this.stddev) / Math.sqrt(this.trials);
     }
 
     // high endpoint of 95% confidence interval
     public double confidenceHi() {
-        // double confidenceHi = 
-        return 0.0;
+        return this.mean + (1.96 * this.stddev) / Math.sqrt(this.trials);
     }
 
     // test client (described below)
     public static void main(String[] args) {
-        // args0 =
+        int n;
+        int t;
+        if (args.length == 2) {
+            try {
+                n = Integer.parseInt(args[0]);
+                t = Integer.parseInt(args[1]);
+            } catch (NumberFormatException e) {
+                System.err.println("Argument" + args[0] + " must be an integer.");
+                System.exit(1);
+            }
+        } else {
+            throw new IllegalArgumentException();
+        }
+        PercolationStats exp = new PercolationStats(n, t);
+        System.out.println("mean                    = " + exp.mean());
+        System.out.println("stddev                    = " + exp.stddev());
+        System.out.println("95% confidence interval = ["
+            + exp.confidenceLo() + ", " + exp.confidenceHi() + "]");
     }
 }
