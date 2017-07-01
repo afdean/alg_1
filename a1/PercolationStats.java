@@ -36,23 +36,23 @@ public class PercolationStats {
         for (int i = 0; i < trials; i++) {
             perc = new Percolation(size);
             percFlag = true;
-            System.out.println("$check1");
             while (percFlag) {
                 // Open a random site
                 openFlag = true;
-                while (openFlag) {row = StdRandom.uniform(1, size + 1);
-                col = StdRandom.uniform(1, size + 1);
-                if (!perc.isOpen(row, col)) {
-                    perc.open(row, col);
-                    openFlag = false;
+                while (openFlag) {
+                    row = StdRandom.uniform(1, size + 1);
+                    col = StdRandom.uniform(1, size + 1);
+                    if (!perc.isOpen(row, col)) {
+                        perc.open(row, col);
+                        openFlag = false;
+                    }
                 }
-
-            System.out.println("$check2");
-            //Once percolates, log the fraction opened
-            if (perc.percolates()) {
-                double opened = (double) perc.numberOfOpenSites();
-                fractionOpened[i] = opened / (size * size);
-                percFlag = false;
+                //Once percolates, log the fraction opened
+                if (perc.percolates()) {
+                    double opened = (double) perc.numberOfOpenSites();
+                    fractionOpened[i] = opened / (size * size);
+                    percFlag = false;
+                }
             }
         }
         //run mean, stdev, conf intteravls

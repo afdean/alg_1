@@ -38,31 +38,33 @@ public class Percolation {
     public void open(int row, int col) {
         checkValidInput(row);
         checkValidInput(col);
-        int index = getArrayIndex(row, col);
-        grid[row - 1][col - 1] = open;
-        openAmount++;
+        if (!isOpen(row, col)) {
+            int index = getArrayIndex(row, col);
+            grid[row - 1][col - 1] = open;
+            openAmount++;
 
-        //Connect up
-        if (row > 1) {
-            wquf.union(index, index - size);
-        }
-        //Connect down
-        if (row < size) {
-            wquf.union(index, index + size);
-        }
-        //Connect left
-        if (col > 1) {
-            wquf.union(index, index - 1);
-        }
-        //Connect right
-        if (col < size) {
-            wquf.union(index, index + 1);
-        }
-        //Connect virtuals
-        if (row == 1) {
-            wquf.union(0, index);
-        } else if (row == size) {
-            wquf.union(index, (size * size) + 1);
+            //Connect up
+            if (row > 1 && isOpen(row - 1, col)) {
+                wquf.union(index, index - size);
+            }
+            //Connect down
+            if (row < size && isOpen(row + 1, col)) {
+                wquf.union(index, index + size);
+            }
+            //Connect left
+            if (col > 1 && isOpen(row, col - 1)) {
+                wquf.union(index, index - 1);
+            }
+            //Connect right
+            if (col < size && isOpen(row, col + 1)) {
+                wquf.union(index, index + 1);
+            }
+            //Connect virtuals
+            if (row == 1) {
+                wquf.union(0, index);
+            } else if (row == size) {
+                wquf.union(index, (size * size) + 1);
+            }
         }
     }
 
@@ -112,8 +114,7 @@ public class Percolation {
         return true;
     }
 
-    //Takes row col inputs from functions and returns what equivalent entry
-    //should be for wquf
+    //Takes row/col inputs from functions and returns equivalent entry in wquf
     public int getArrayIndex(int row, int col) {
         int index = ((row - 1) * size) + col;
         return index;
