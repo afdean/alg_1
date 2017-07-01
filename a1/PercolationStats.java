@@ -8,6 +8,8 @@ public class PercolationStats {
     private final int trials;
     // Fraction of open sites in computational exp t (indexed at 0)
     private final double[] fractionOpened;
+    private double mean;
+    private double stddev;
 
     // perform trials independent exps on an n-by-n grid
     public PercolationStats(int n, int trials) {
@@ -53,22 +55,24 @@ public class PercolationStats {
 
     // sample mean of percolation threshold
     public double mean() {
-        return StdStats.mean(fractionOpened);
+        this.mean = StdStats.mean(fractionOpened);
+        return this.mean;
     }
 
     // sample standard deviation of percolation threshold
     public double stddev() {
-        return StdStats.stddev(fractionOpened);
+        this.stddev = StdStats.stddev(fractionOpened);
+        return this.stddev;
     }
 
     // low  endpoint of 95% confidence interval
     public double confidenceLo() {
-        return mean() - (1.96 * stddev()) / Math.sqrt(this.trials);
+        return this.mean - (1.96 * this.stddev) / Math.sqrt(this.trials);
     }
 
     // high endpoint of 95% confidence interval
     public double confidenceHi() {
-        return mean() + (1.96 * stddev()) / Math.sqrt(this.trials);
+        return this.mean + (1.96 * this.stddev) / Math.sqrt(this.trials);
     }
 
     // test client (described below)
