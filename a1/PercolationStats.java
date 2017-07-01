@@ -11,6 +11,8 @@ public class PercolationStats {
     private double numberOpened = 0;
     private double mean;
     private double stddev;
+    private double confidenceLo;
+    private double confidenceHi;
 
     // perform trials independent exps on an n-by-n grid
     public PercolationStats(int n, int trials) {
@@ -48,34 +50,35 @@ public class PercolationStats {
                 }
                 // Once percolates, log the fraction opened
                 if (perc.percolates()) {
-                    System.out.println("Here is number opened:" + numberOpened);
                     fractionOpened[i] = numberOpened / (size * size);
                     percFlag = false;
                 }
             }
         }
+        this.mean = StdStats.mean(fractionOpened);
+        this.stddev = StdStats.stddev(fractionOpened);
+        this.confidenceLo = this.mean - (1.96 * this.stddev) / Math.sqrt(this.trials);
+        this.confidenceHi = this.mean + (1.96 * this.stddev) / Math.sqrt(this.trials);
     }
 
     // sample mean of percolation threshold
     public double mean() {
-        this.mean = StdStats.mean(fractionOpened);
         return this.mean;
     }
 
     // sample standard deviation of percolation threshold
     public double stddev() {
-        this.stddev = StdStats.stddev(fractionOpened);
         return this.stddev;
     }
 
     // low  endpoint of 95% confidence interval
     public double confidenceLo() {
-        return this.mean - (1.96 * this.stddev) / Math.sqrt(this.trials);
+        return this.confidenceLo;
     }
 
     // high endpoint of 95% confidence interval
     public double confidenceHi() {
-        return this.mean + (1.96 * this.stddev) / Math.sqrt(this.trials);
+        return this.confidenceHi;
     }
 
     // test client (described below)
