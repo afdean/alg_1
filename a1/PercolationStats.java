@@ -3,21 +3,15 @@ import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
 
-    //Size of n in grid
-    private final int size;
-    private final int trials;
-    //Fraction of open sites in computational exp t (indexed at 0)
+    // Size of n in grid
+    private int size;
+    private int trials;
+    // Fraction of open sites in computational exp t (indexed at 0)
     private double[] fractionOpened;
-
-    //Experiment results
-    private double mean;
-    private double stddev;
-    private double confidenceLo;
-    private double confidenceHi;
 
     // perform trials independent exps on an n-by-n grid
     public PercolationStats(int n, int trials) {
-        if (n < 1 | trials < 1) {
+        if (n < 1 || trials < 1) {
             throw new IllegalArgumentException();
         }
         // Class Variables
@@ -25,14 +19,14 @@ public class PercolationStats {
         size = n;
         fractionOpened = new double[trials];
 
-        //Individual Experiment Variables
+        // Individual Experiment Variables
         Percolation perc;
         int row;
         int col;
         boolean percFlag;
         boolean openFlag;
 
-        //Run the loop trials amount of times
+        // Run the loop trials amount of times
         for (int i = 0; i < trials; i++) {
             perc = new Percolation(size);
             percFlag = true;
@@ -47,7 +41,7 @@ public class PercolationStats {
                         openFlag = false;
                     }
                 }
-                //Once percolates, log the fraction opened
+                // Once percolates, log the fraction opened
                 if (perc.percolates()) {
                     double opened = (double) perc.numberOfOpenSites();
                     fractionOpened[i] = opened / (size * size);
@@ -55,11 +49,6 @@ public class PercolationStats {
                 }
             }
         }
-        //run mean, stdev, conf intteravls
-        this.mean = mean();
-        this.stddev = stddev();
-        this.confidenceLo = confidenceLo();
-        this.confidenceHi = confidenceHi();
     }
 
     // sample mean of percolation threshold
@@ -74,12 +63,12 @@ public class PercolationStats {
 
     // low  endpoint of 95% confidence interval
     public double confidenceLo() {
-        return this.mean - (1.96 * this.stddev) / Math.sqrt(this.trials);
+        return mean() - (1.96 * stddev()) / Math.sqrt(this.trials);
     }
 
     // high endpoint of 95% confidence interval
     public double confidenceHi() {
-        return this.mean + (1.96 * this.stddev) / Math.sqrt(this.trials);
+        return mean() + (1.96 * stddev()) / Math.sqrt(this.trials);
     }
 
     // test client (described below)
@@ -97,7 +86,6 @@ public class PercolationStats {
                     + exp.confidenceLo() + ", " + exp.confidenceHi() + "]");
             } catch (NumberFormatException e) {
                 System.err.println("Argument" + args[0] + " must be an integer.");
-                System.exit(1);
             }
         } else {
             throw new IllegalArgumentException();

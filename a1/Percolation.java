@@ -2,11 +2,11 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
 
-    private final int open = 1;
-    private final int closed = 0;
-    private final int top = 0;
-    private final int bottom;
-    private final int size;
+    private static final int open = 1;
+    private static final int closed = 0;
+    private static final int top = 0;
+    private int bottom;
+    private int size;
     private int openAmount = 0;
     private WeightedQuickUnionUF wquf;
     private int[][] grid;
@@ -27,10 +27,10 @@ public class Percolation {
             }
         }
 
-        //0 is index of virtual top
-        //1 is (1,1)
-        //2 is (1,2)...
-        //size^2 + 1 index is virtual bottom
+        // 0 is index of virtual top
+        // 1 is (1,1)
+        // 2 is (1,2)...
+        // size^2 + 1 index is virtual bottom
         wquf = new WeightedQuickUnionUF((size * size) + 2);
     }
 
@@ -43,23 +43,23 @@ public class Percolation {
             grid[row - 1][col - 1] = open;
             openAmount++;
 
-            //Connect up
+            // Connect up
             if (row > 1 && isOpen(row - 1, col)) {
                 wquf.union(index, index - size);
             }
-            //Connect down
+            // Connect down
             if (row < size && isOpen(row + 1, col)) {
                 wquf.union(index, index + size);
             }
-            //Connect left
+            // Connect left
             if (col > 1 && isOpen(row, col - 1)) {
                 wquf.union(index, index - 1);
             }
-            //Connect right
+            // Connect right
             if (col < size && isOpen(row, col + 1)) {
                 wquf.union(index, index + 1);
             }
-            //Connect virtuals
+            // Connect virtuals
             if (row == 1) {
                 wquf.union(0, index);
             } else if (row == size) {
@@ -72,11 +72,7 @@ public class Percolation {
     public boolean isOpen(int row, int col) {
         checkValidInput(row);
         checkValidInput(col);
-        if (grid[row - 1][col - 1] == open) {
-            return true;
-        } else {
-            return false;
-        }
+        return grid[row - 1][col - 1] == open;
     }
 
     // is site (row, col) full?
@@ -84,11 +80,7 @@ public class Percolation {
         checkValidInput(row);
         checkValidInput(col);
         int index = getArrayIndex(row, col);
-        if (wquf.connected(0, index)) {
-            return true;
-        } else {
-            return false;
-        }
+        return wquf.connected(top, index);
     }
 
     // number of open sites
@@ -99,22 +91,18 @@ public class Percolation {
     // does the system percolate?
     public boolean percolates() {
         // if virtual top and virtual bottom union, yes, else no.
-        if (wquf.connected(0, (size * size) + 1)) {
-            return true;
-        } else {
-            return false;
-        }
+        return wquf.connected(top, bottom);
     }
 
     // Should argument be thrown?
     private boolean checkValidInput(int index) {
-        if (index < 1 | index > size) {
+        if (index < 1 || index > size) {
             throw new IllegalArgumentException();
         }
         return true;
     }
 
-    //Takes row/col inputs from functions and returns equivalent entry in wquf
+    // Takes row/col inputs from functions and returns equivalent entry in wquf
     private int getArrayIndex(int row, int col) {
         int index = ((row - 1) * size) + col;
         return index;
