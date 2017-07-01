@@ -3,26 +3,19 @@ import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
 
-    // Size of n in grid
-    private final int size;
-    private final int trials;
     // Fraction of open sites in computational exp t (indexed at 0)
-    private final double[] fractionOpened;
-    private double numberOpened = 0;
-    private double mean;
-    private double stddev;
-    private double confidenceLo;
-    private double confidenceHi;
+    private final double mean;
+    private final double stddev;
+    private final double confidenceLo;
+    private final double confidenceHi;
 
     // perform trials independent exps on an n-by-n grid
     public PercolationStats(int n, int trials) {
         if (n < 1 || trials < 1) {
             throw new IllegalArgumentException();
         }
-        // Class Variables
-        this.trials = trials;
-        size = n;
-        fractionOpened = new double[trials];
+        double[] fractionOpened = new double[trials];
+        double numberOpened = 0;
 
         // Individual Experiment Variables
         Percolation perc;
@@ -34,14 +27,14 @@ public class PercolationStats {
         // Run the loop trials amount of times
         for (int i = 0; i < trials; i++) {
             numberOpened = 0;
-            perc = new Percolation(size);
+            perc = new Percolation(n);
             percFlag = true;
             while (percFlag) {
                 // Open a random site
                 openFlag = true;
                 while (openFlag) {
-                    row = StdRandom.uniform(1, size + 1);
-                    col = StdRandom.uniform(1, size + 1);
+                    row = StdRandom.uniform(1, n + 1);
+                    col = StdRandom.uniform(1, n + 1);
                     if (!perc.isOpen(row, col)) {
                         perc.open(row, col);
                         numberOpened++;
@@ -50,15 +43,15 @@ public class PercolationStats {
                 }
                 // Once percolates, log the fraction opened
                 if (perc.percolates()) {
-                    fractionOpened[i] = numberOpened / (size * size);
+                    fractionOpened[i] = numberOpened / (n * n);
                     percFlag = false;
                 }
             }
         }
         this.mean = StdStats.mean(fractionOpened);
         this.stddev = StdStats.stddev(fractionOpened);
-        this.confidenceLo = this.mean - (1.96 * this.stddev) / Math.sqrt(this.trials);
-        this.confidenceHi = this.mean + (1.96 * this.stddev) / Math.sqrt(this.trials);
+        this.confidenceLo = this.mean - (1.96 * this.stddev) / Math.sqrt(trials);
+        this.confidenceHi = this.mean + (1.96 * this.stddev) / Math.sqrt(trials);
     }
 
     // sample mean of percolation threshold

@@ -4,22 +4,14 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-Percolation	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^public class Percolation {$/;"	class	line:3
-OPEN	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    private static final int OPEN = 1;$/;"	field	line:5	class:Percolation	file:
-CLOSED	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    private static final int CLOSED = 0;$/;"	field	line:6	class:Percolation	file:
-TOP	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    private static final int TOP = 0;$/;"	field	line:7	class:Percolation	file:
-bottom	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    private final int bottom;$/;"	field	line:8	class:Percolation	file:
-size	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    private final int size;$/;"	field	line:9	class:Percolation	file:
-openAmount	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    private int openAmount = 0;$/;"	field	line:10	class:Percolation	file:
-wquf	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    private final WeightedQuickUnionUF wquf;$/;"	field	line:11	class:Percolation	file:
-fullwquf	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    private final WeightedQuickUnionUF fullwquf;$/;"	field	line:12	class:Percolation	file:
-grid	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    private byte[][] grid;$/;"	field	line:13	class:Percolation	file:
-Percolation	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    public Percolation(int n) {$/;"	method	line:16	class:Percolation	signature:(int n)
-open	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    public void open(int row, int col) {$/;"	method	line:40	class:Percolation	signature:(int row, int col)
-isOpen	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    public boolean isOpen(int row, int col) {$/;"	method	line:82	class:Percolation	signature:(int row, int col)
-isFull	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    public boolean isFull(int row, int col) {$/;"	method	line:89	class:Percolation	signature:(int row, int col)
-numberOfOpenSites	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    public int numberOfOpenSites() {$/;"	method	line:97	class:Percolation	signature:()
-percolates	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    public boolean percolates() {$/;"	method	line:102	class:Percolation	signature:()
-checkValidInput	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    private boolean checkValidInput(int index) {$/;"	method	line:108	class:Percolation	file:	signature:(int index)
-getArrayIndex	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    private int getArrayIndex(int row, int col) {$/;"	method	line:116	class:Percolation	file:	signature:(int row, int col)
-main	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    public static void main(String[] args) {$/;"	method	line:122	class:Percolation	signature:(String[] args)
+PercolationStats	/Users/andrewdean/github/alg_1/a1/PercolationStats.java	/^public class PercolationStats {$/;"	class	line:4
+mean	/Users/andrewdean/github/alg_1/a1/PercolationStats.java	/^    private final double mean;$/;"	field	line:7	class:PercolationStats	file:
+stddev	/Users/andrewdean/github/alg_1/a1/PercolationStats.java	/^    private final double stddev;$/;"	field	line:8	class:PercolationStats	file:
+confidenceLo	/Users/andrewdean/github/alg_1/a1/PercolationStats.java	/^    private final double confidenceLo;$/;"	field	line:9	class:PercolationStats	file:
+confidenceHi	/Users/andrewdean/github/alg_1/a1/PercolationStats.java	/^    private final double confidenceHi;$/;"	field	line:10	class:PercolationStats	file:
+PercolationStats	/Users/andrewdean/github/alg_1/a1/PercolationStats.java	/^    public PercolationStats(int n, int trials) {$/;"	method	line:13	class:PercolationStats	signature:(int n, int trials)
+mean	/Users/andrewdean/github/alg_1/a1/PercolationStats.java	/^    public double mean() {$/;"	method	line:58	class:PercolationStats	signature:()
+stddev	/Users/andrewdean/github/alg_1/a1/PercolationStats.java	/^    public double stddev() {$/;"	method	line:63	class:PercolationStats	signature:()
+confidenceLo	/Users/andrewdean/github/alg_1/a1/PercolationStats.java	/^    public double confidenceLo() {$/;"	method	line:68	class:PercolationStats	signature:()
+confidenceHi	/Users/andrewdean/github/alg_1/a1/PercolationStats.java	/^    public double confidenceHi() {$/;"	method	line:73	class:PercolationStats	signature:()
+main	/Users/andrewdean/github/alg_1/a1/PercolationStats.java	/^    public static void main(String[] args) {$/;"	method	line:78	class:PercolationStats	signature:(String[] args)

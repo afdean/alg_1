@@ -19,7 +19,7 @@ public class Percolation {
         }
 
         size = n;
-        grid = new int[size][size];
+        grid = new byte[size][size];
         bottom = (size * size) + 1;
 
         for (int i = 0; i < size; i++) {
