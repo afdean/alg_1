@@ -33,6 +33,6 @@ isOpen	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    public boolean i
 isFull	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    public boolean isFull(int row, int col) {$/;"	method	line:83	class:Percolation	signature:(int row, int col)
 numberOfOpenSites	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    public int numberOfOpenSites() {$/;"	method	line:95	class:Percolation	signature:()
 percolates	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    public boolean percolates() {$/;"	method	line:100	class:Percolation	signature:()
-checkValidInput	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    public boolean checkValidInput(int index) {$/;"	method	line:110	class:Percolation	signature:(int index)
-getArrayIndex	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    public int getArrayIndex(int row, int col) {$/;"	method	line:118	class:Percolation	signature:(int row, int col)
+checkValidInput	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    private boolean checkValidInput(int index) {$/;"	method	line:110	class:Percolation	file:	signature:(int index)
+getArrayIndex	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    private int getArrayIndex(int row, int col) {$/;"	method	line:118	class:Percolation	file:	signature:(int row, int col)
 main	/Users/andrewdean/github/alg_1/a1/Percolation.java	/^    public static void main(String[] args) {$/;"	method	line:124	class:Percolation	signature:(String[] args)

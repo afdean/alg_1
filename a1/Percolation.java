@@ -107,7 +107,7 @@ public class Percolation {
     }
 
     // Should argument be thrown?
-    public boolean checkValidInput(int index) {
+    private boolean checkValidInput(int index) {
         if (index < 1 | index > size) {
             throw new IllegalArgumentException();
         }
@@ -115,7 +115,7 @@ public class Percolation {
     }
 
     //Takes row/col inputs from functions and returns equivalent entry in wquf
-    public int getArrayIndex(int row, int col) {
+    private int getArrayIndex(int row, int col) {
         int index = ((row - 1) * size) + col;
         return index;
     }
