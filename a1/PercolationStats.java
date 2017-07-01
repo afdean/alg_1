@@ -8,6 +8,7 @@ public class PercolationStats {
     private final int trials;
     // Fraction of open sites in computational exp t (indexed at 0)
     private final double[] fractionOpened;
+    private double numberOpened = 0;
     private double mean;
     private double stddev;
 
@@ -25,12 +26,12 @@ public class PercolationStats {
         Percolation perc;
         int row;
         int col;
-        double numberOpened = 0;
         boolean percFlag;
         boolean openFlag;
 
         // Run the loop trials amount of times
         for (int i = 0; i < trials; i++) {
+            numberOpened = 0;
             perc = new Percolation(size);
             percFlag = true;
             while (percFlag) {
@@ -47,6 +48,7 @@ public class PercolationStats {
                 }
                 // Once percolates, log the fraction opened
                 if (perc.percolates()) {
+                    System.out.println("Here is number opened:" + numberOpened);
                     fractionOpened[i] = numberOpened / (size * size);
                     percFlag = false;
                 }
