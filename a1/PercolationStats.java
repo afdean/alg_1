@@ -4,10 +4,10 @@ import edu.princeton.cs.algs4.StdStats;
 public class PercolationStats {
 
     // Size of n in grid
-    private int size;
-    private int trials;
+    private final int size;
+    private final int trials;
     // Fraction of open sites in computational exp t (indexed at 0)
-    private double[] fractionOpened;
+    private final double[] fractionOpened;
 
     // perform trials independent exps on an n-by-n grid
     public PercolationStats(int n, int trials) {
