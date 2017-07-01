@@ -25,6 +25,7 @@ public class PercolationStats {
         Percolation perc;
         int row;
         int col;
+        double numberOpened = 0;
         boolean percFlag;
         boolean openFlag;
 
@@ -40,13 +41,13 @@ public class PercolationStats {
                     col = StdRandom.uniform(1, size + 1);
                     if (!perc.isOpen(row, col)) {
                         perc.open(row, col);
+                        numberOpened++;
                         openFlag = false;
                     }
                 }
                 // Once percolates, log the fraction opened
                 if (perc.percolates()) {
-                    double opened = (double) perc.numberOfOpenSites();
-                    fractionOpened[i] = opened / (size * size);
+                    fractionOpened[i] = numberOpened / (size * size);
                     percFlag = false;
                 }
             }
