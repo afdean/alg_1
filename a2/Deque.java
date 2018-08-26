@@ -1,4 +1,6 @@
 import java.util.Iterator;
+import java.lang.IllegalArgumentException;
+import java.util.NoSuchElementException;
 
 public class Deque<Item> implements Iterable<Item> {
 
@@ -34,6 +36,11 @@ public class Deque<Item> implements Iterable<Item> {
     // add the item to the front
     public void addFirst(Item item) {
 
+        // Per requirements
+        if (item == null) {
+            throw new IllegalArgumentException();
+        }
+
         // Link the new first the old first
         Node oldFirst = first;
         Node newFirst = new Node();
@@ -54,6 +61,12 @@ public class Deque<Item> implements Iterable<Item> {
 
     // add the item to the end
     public void addLast(Item item) {
+
+        // Per requirements
+        if (item == null) {
+            throw new IllegalArgumentException();
+        }
+
         // Link the new last the old last
         Node oldLast = last;
         Node newLast = new Node();
@@ -74,12 +87,55 @@ public class Deque<Item> implements Iterable<Item> {
 
     // remove and return the item from the front
     public Item removeFirst() {
-        return null;
+        Item removed;
+
+        // Per requirements
+        if (size() == 0) {
+            throw new NoSuchElementException();
+        }
+
+        removed = first.item;
+
+        if (size() == 1) {
+            first = null;
+            last = null;
+        } else {
+            Node newFirst;
+            newFirst = first.next;
+            newFirst.previous = null;
+            first = newFirst;
+        }
+
+        n--;
+
+        return removed;
     }
 
     // remove and return the item from the end
     public Item removeLast() {
-        return null;
+
+        Item removed;
+
+        // Per requirements
+        if (size() == 0) {
+            throw new NoSuchElementException();
+        }
+
+        removed = last.item;
+
+        if (size() == 1) {
+            first = null;
+            last = null;
+        } else {
+            Node newLast;
+            newLast = last.previous;
+            newLast.next = null;
+            last = newLast;
+        }
+
+        n--;
+
+        return removed;
     }
 
     // return an iterator over items in order from front to end
