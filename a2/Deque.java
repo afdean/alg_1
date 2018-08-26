@@ -1,6 +1,7 @@
 import java.util.Iterator;
 import java.lang.IllegalArgumentException;
 import java.util.NoSuchElementException;
+import java.lang.UnsupportedOperationException;
 
 public class Deque<Item> implements Iterable<Item> {
 
@@ -140,7 +141,29 @@ public class Deque<Item> implements Iterable<Item> {
 
     // return an iterator over items in order from front to end
     public Iterator<Item> iterator() {
-        return null;
+        return new DequeIterator();
+    }
+
+    private class DequeIterator implements Iterator<Item> {
+
+        private Node current = first;
+
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        public Item next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            Item returned = current.item;
+            current = current.next;
+            return returned;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
     }
 
     // unit testing (optional)

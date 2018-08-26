@@ -1,6 +1,8 @@
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class TestDeque {
@@ -240,6 +242,44 @@ public class TestDeque {
         // Order at this point should be 2
         Assert.assertEquals(test.removeLast(), testString2);
         Assert.assertEquals(test.size(), 0);
+    }
+
+    // Check for iterator creation
+    @Test
+    public void testIterator1() {
+        Deque test = new Deque<String>();
+        Iterator itr = test.iterator();
+    }
+
+    // Check for iterator remove exception
+    @Test(expected = UnsupportedOperationException.class)
+    public void testIterator2() {
+        Deque test = new Deque<String>();
+        Iterator itr = test.iterator();
+        itr.remove();
+    }
+
+    // Check for iterator next exception
+    @Test(expected = NoSuchElementException.class)
+    public void testIterator3() {
+        Deque test = new Deque<String>();
+        Iterator itr = test.iterator();
+        itr.next();
+    }
+
+    @Test
+    public void testIterator4() {
+        Deque test = new Deque<String>();
+        String testString = "hello";
+        String testString2 = "hello2";
+        String testString3 = "hello3";
+        test.addLast(testString);
+        test.addLast(testString2);
+        test.addLast(testString3);
+        Iterator itr = test.iterator();
+        Assert.assertEquals(itr.next(), testString);
+        Assert.assertEquals(itr.next(), testString2);
+        Assert.assertEquals(itr.next(), testString3);
     }
 
 }
