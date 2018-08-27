@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Comparator;
 
 import org.junit.Assert;
@@ -47,5 +48,34 @@ public class TestFastCollinearPoints {
         FastCollinearPoints fc = new FastCollinearPoints(pts);
         return;
     }
+
+    // Scratch test
+    @Test
+    public void test() {
+        Point[] pts = new Point[7];
+        Point a = new Point(0, 1);
+        Point b = new Point(1, 2);
+        Point c = new Point(2, 3);
+        Point d = new Point(3, 4);
+        Point e = new Point(1, 3);
+        Point f = new Point(2, 5);
+        Point g = new Point(3, 7);
+        pts[0] = a;
+        pts[1] = f;
+        pts[2] = b;
+        pts[3] = c;
+        pts[4] = e;
+        pts[5] = g;
+        pts[6] = d;
+        Point test = c;
+        Arrays.sort(pts, test.slopeOrder());
+        for (Point pt : pts) {
+            System.out.println(pt);
+            System.out.println(test.slopeTo(pt));
+        }
+        return;
+    }
+
+
 
 }
