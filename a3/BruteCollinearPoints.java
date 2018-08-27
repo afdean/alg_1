@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class BruteCollinearPoints {
     private int n;
-    private ArrayList<Point> tempSegs;
+    private ArrayList<LineSegment> tempSegs;
     private LineSegment[] segs;
 
     // finds all line segments containing 4 points
@@ -16,7 +16,7 @@ public class BruteCollinearPoints {
         }
 
         for (Point p : points) {
-            if (points == null) {
+            if (p == null) {
                 throw new IllegalArgumentException();
             }
         }
@@ -32,11 +32,24 @@ public class BruteCollinearPoints {
         n = 0;
         tempSegs = new ArrayList<>();
 
-        // N^4 brute force, as told to do
-        for (int i = 0; i < points.length - 4; i++) {
-            for (int j = i + 1; j < points.length - 3; j++) {
-                for (int k = j + 1; k < points.length - 2; k++) {
-                    for (int l = k + 1; l < points.length - 1; i++) {
+        // <= ~N^4 brute force, as told to do
+        for (int i = 0; i < points.length - 3; i++) {
+            for (int j = i + 1; j < points.length - 2; j++) {
+                if (i == j) {
+                    break;
+                }
+                for (int k = j + 1; k < points.length - 1; k++) {
+                    if (j == k) {
+                        break;
+                    }
+                    for (int l = k + 1; l < points.length; l++) {
+                        if (k == l) {
+                            break;
+                        }
+                        System.out.println(i);
+                        System.out.println(j);
+                        System.out.println(k);
+                        System.out.println(l);
                         checkCollinear(points[i], points[j], points[k], points[l]);
                     }
                 }
@@ -56,10 +69,12 @@ public class BruteCollinearPoints {
         // using == is bad practice but assignment says we can make assumptions
 
         Comparator<Point> comp = a.slopeOrder();
-        if (comp.compare(b, c) == 0 && comp.compare(c, d) == 0) {
-            LineSegment ls = new LineSegment(a, d);
-            tempSegs.add(ls);
-            n++;
+        if (comp.compare(b, c) == 0) {
+            if(comp.compare(c, d) == 0) {
+                LineSegment ls = new LineSegment(a, d);
+                tempSegs.add(ls);
+                n++;
+            }
         }
     }
 
