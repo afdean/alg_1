@@ -24,7 +24,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     // resize
-    public void resize(int capacity) {
+    private void resize(int capacity) {
         Item[] temp = (Item[]) new Object[capacity];
         for (int i = 0; i < n; i++) {
             temp[i] = q[i];
@@ -54,11 +54,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         int rand = StdRandom.uniform(n);
         Item removed = q[rand];
 
-        if (n != q.length) {
-            q[rand] = q[n];
-        }
-
-        q[n] = null;
+        q[rand] = q[n - 1];
+        q[n - 1] = null;
 
         n--;
 
@@ -88,13 +85,17 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     // make the iterator use knuth shuffle for linear time
     private class QueueIterator implements Iterator<Item> {
         int current = 0;
+        Item[] copied = (Item[]) new Object[n];
 
         private QueueIterator() {
-            StdRandom.shuffle(q);
+            for (int i = 0; i < n; i++) {
+                copied[i] = q[i];
+            }
+            StdRandom.shuffle(copied);
         }
 
         public boolean hasNext() {
-            if (isEmpty() || size() == q.length) {
+            if (isEmpty() || current == copied.length) {
                 return false;
             } else {
                 return true;
@@ -105,7 +106,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            Item returned = q[current];
+            Item returned = copied[current];
             current++;
             return returned;
         }
