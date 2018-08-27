@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.ArrayList;
 
 public class BruteCollinearPoints {
     private int n;
@@ -32,6 +31,10 @@ public class BruteCollinearPoints {
         n = 0;
         tempSegs = new ArrayList<>();
 
+        // NOTE: This implementation breaks if the below weren't true
+        // For simplicity, we will not supply any input to BruteCollinearPoints
+        // that has 5 or more collinear points
+
         // <= ~N^4 brute force, as told to do
         for (int i = 0; i < points.length - 3; i++) {
             for (int j = i + 1; j < points.length - 2; j++) {
@@ -46,10 +49,6 @@ public class BruteCollinearPoints {
                         if (k == l) {
                             break;
                         }
-                        System.out.println(i);
-                        System.out.println(j);
-                        System.out.println(k);
-                        System.out.println(l);
                         checkCollinear(points[i], points[j], points[k], points[l]);
                     }
                 }
@@ -88,3 +87,5 @@ public class BruteCollinearPoints {
         return segs;
     }
 }
+
+// Use
