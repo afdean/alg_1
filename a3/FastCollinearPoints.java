@@ -43,43 +43,62 @@ public class FastCollinearPoints {
         }
 
         int maximalCounter;
+        // printArray(naturalCopy);
         for (int i = 0; i < naturalCopy.length; i++) {
+            // First entry of slope copy will be naturalCopy[i]
             Arrays.sort(slopeCopy, naturalCopy[i].slopeOrder());
 
-            for (int j = 0; j < slopeCopy.length - 3; j++) {
-                maximalCounter = 0;
-                for (int k = j + 1; k < slopeCopy.length; k++) {
-                    // Accumulating points that are equal
-                    if(slopeCopy[j].slopeTo(slopeCopy[k]) == 0) {
-                        maximalCounter++;
-                    } else {
-                        // No longer accumulating points that are equal
-                        if (maximalCounter >= 4) {
-                            // gather every point until this point and natural
-                            // sort the line
-                            Point[] lineArray = new Point[k - j];
-                            int pointer = j;
-                            for (int l = 0; l < lineArray.length; l++) {
-                                lineArray[l] = slopeCopy[pointer];
-                                pointer++;
-                            }
-                            Arrays.sort(lineArray);
-                            // if smallest point is equal to ith point, add it
-                            // using end points
-                            if (lineArray[0].compareTo(naturalCopy[i]) == 0) {
-                                LineSegment ls = new LineSegment(lineArray[0], lineArray[lineArray.length - 1]);
-                                tempSegs.add(ls);
-                                n++;
-                            }
+            // System.out.println("Next i iteration");
+            // printArray(slopeCopy);
 
-                        }
-                        maximalCounter = 0;
-                        if (k < slopeCopy.length - 3) {
-                            j = k;
+            double currentSlope = Double.NEGATIVE_INFINITY;
+            // Need this to hit 3 (origin + 3 more at least)
+            maximalCounter = 0;
+
+            ArrayList<Point> potentialSeg = new ArrayList<>();
+            potentialSeg.add(slopeCopy[0]);
+
+            // TODO: Fix maximal counter off, this is a bad implementation overall
+            for (int j = 1; j < slopeCopy.length; j++) {
+                // if the slope is equal to current scope increment maximal
+                // counter
+                double nextSlope = slopeCopy[0].slopeTo(slopeCopy[j]);
+
+                if (nextSlope == currentSlope) {
+                    // System.out.println("Incrementing");
+                    maximalCounter++;
+                }
+
+                if (nextSlope != currentSlope || j == slopeCopy.length - 1) {
+                    if (maximalCounter >= 3) {
+                        // add the line if possible
+                        // line consists of origin plus accumulated points
+                        Point[] lineArray = new Point[maximalCounter + 1];
+                        lineArray[0] = slopeCopy[0];
+                        int pointer;
+                        if (j == slopeCopy.length - 1) {
+                            pointer = j - maximalCounter + 1;
                         } else {
-                            break;
+                            pointer = j - maximalCounter;
+                        }
+                        for (int l = 1; l < lineArray.length; l++) {
+                            lineArray[l] = slopeCopy[pointer];
+                            pointer++;
+                        }
+                        Arrays.sort(lineArray);
+                        // System.out.println(lineArray);
+                        // if smallest point period is equal to point we started our
+                        // sort on the slopecopy, add it using end points
+                        if (lineArray.length >= 4 && lineArray[0].compareTo(naturalCopy[i]) == 0) {
+                            // System.out.println("I'm here");
+                            LineSegment ls = new LineSegment(lineArray[0], lineArray[lineArray.length - 1]);
+                            tempSegs.add(ls);
+                            n++;
                         }
                     }
+                    //RESET THINGS
+                    currentSlope = nextSlope;
+                    maximalCounter = 1;
                 }
             }
         }
@@ -100,6 +119,12 @@ public class FastCollinearPoints {
     // the line segments
     public LineSegment[] segments() {
         return segs;
+    }
+
+    private void printArray(Object[] a) {
+        for (Object obj : a) {
+            System.out.println(obj);
+        }
     }
 }
 
