@@ -46,14 +46,12 @@ public class FastCollinearPoints {
         for (int i = 0; i < naturalCopy.length; i++) {
             Arrays.sort(slopeCopy, naturalCopy[i].slopeOrder());
 
-            for (int j = 0; j < slopeCopy.length - 3; j++) {
+            for (int j = 0; j < slopeCopy.length - 4; j++) {
                 maximalCounter = 0;
                 for (int k = j + 1; k < slopeCopy.length; k++) {
-                    // Accumulating points that are equal
                     if(slopeCopy[j].slopeTo(slopeCopy[k]) == 0) {
                         maximalCounter++;
                     } else {
-                        // No longer accumulating points that are equal
                         if (maximalCounter >= 4) {
                             // gather every point until this point and natural
                             // sort the line
@@ -73,8 +71,7 @@ public class FastCollinearPoints {
                             }
 
                         }
-                        maximalCounter = 0;
-                        if (k < slopeCopy.length - 3) {
+                        if (k < slopeCopy.length - 4) {
                             j = k;
                         } else {
                             break;

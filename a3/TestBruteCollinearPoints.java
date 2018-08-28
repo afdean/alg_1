@@ -201,4 +201,39 @@ public class TestBruteCollinearPoints {
     //     Assert.assertEquals(bc.numberOfSegments(), 1);
     //     return;
     // }
+
+    // Check given case
+    @Test
+    public void testInput8() {
+        // 10000      0
+        //     0  10000
+        //  3000   7000
+        //  7000   3000
+        // 20000  21000
+        //  3000   4000
+        // 14000  15000
+        //  6000   7000
+        Point[] pts = new Point[8];
+        Point a = new Point(0, 10000);
+        Point b = new Point(10000, 0);
+        Point c = new Point(3000, 7000);
+        Point d = new Point(7000, 3000);
+        Point e = new Point(20000, 21000);
+        Point f = new Point(3000, 4000);
+        Point g = new Point(14000, 15000);
+        Point h = new Point(6000, 7000);
+        pts[0] = a;
+        pts[1] = b;
+        pts[2] = c;
+        pts[3] = d;
+        pts[4] = e;
+        pts[5] = f;
+        pts[6] = g;
+        pts[7] = h;
+        BruteCollinearPoints bc = new BruteCollinearPoints(pts);
+
+        Assert.assertEquals(bc.numberOfSegments(), 2);
+
+        return;
+    }
 }
