@@ -42,52 +42,33 @@ public class FastCollinearPoints {
             slopeCopy[i] = points[i];
         }
 
-        int maximalCounter;
-        // printArray(naturalCopy);
         for (int i = 0; i < naturalCopy.length; i++) {
+
             // First entry of slope copy will be naturalCopy[i]
             Arrays.sort(slopeCopy, naturalCopy[i].slopeOrder());
-
-            // System.out.println("Next i iteration");
-            // printArray(slopeCopy);
-
             double currentSlope = Double.NEGATIVE_INFINITY;
-            // Need this to hit 3 (origin + 3 more at least)
-            maximalCounter = 0;
-
-            // TODO: Fix maximal counter off, this is a bad implementation overall
+            ArrayList<Point> potentialSeg = new ArrayList<>();
             for (int j = 1; j < slopeCopy.length; j++) {
-                // if the slope is equal to current scope increment maximal
-                // counter
                 double nextSlope = slopeCopy[0].slopeTo(slopeCopy[j]);
 
                 if (nextSlope == currentSlope) {
                     // System.out.println("Incrementing");
-                    maximalCounter++;
+                    potentialSeg.add(slopeCopy[j]);
                 }
 
                 if (nextSlope != currentSlope || j == slopeCopy.length - 1) {
-                    if (maximalCounter >= 3) {
+                    if (potentialSeg.size() >= 3) {
                         // add the line if possible
                         // line consists of origin plus accumulated points
-                        Point[] lineArray = new Point[maximalCounter + 1];
-                        lineArray[0] = slopeCopy[0];
-                        int pointer;
-                        if (j == slopeCopy.length - 1) {
-                            pointer = j - maximalCounter + 1;
-                        } else {
-                            pointer = j - maximalCounter;
-                        }
-                        for (int l = 1; l < lineArray.length; l++) {
-                            lineArray[l] = slopeCopy[pointer];
-                            pointer++;
+                        potentialSeg.add(slopeCopy[0]);
+                        Point[] lineArray = new Point[potentialSeg.size()];
+                        for (int k = 0; k < lineArray.length; k++) {
+                            lineArray[k] = potentialSeg.get(k);
                         }
                         Arrays.sort(lineArray);
-                        // System.out.println(lineArray);
-                        // if smallest point period is equal to point we started our
-                        // sort on the slopecopy, add it using end points
-                        if (lineArray.length >= 4 && lineArray[0].compareTo(naturalCopy[i]) == 0) {
-                            // System.out.println("I'm here");
+                        // if smallest point period in the potential segment is
+                        // equal to the origin sort point, we can add it
+                        if (lineArray[0].compareTo(slopeCopy[0]) == 0) {
                             LineSegment ls = new LineSegment(lineArray[0], lineArray[lineArray.length - 1]);
                             tempSegs.add(ls);
                             n++;
@@ -95,7 +76,8 @@ public class FastCollinearPoints {
                     }
                     //RESET THINGS
                     currentSlope = nextSlope;
-                    maximalCounter = 1;
+                    potentialSeg = new ArrayList<>();
+                    potentialSeg.add(slopeCopy[j]);
                 }
             }
         }
@@ -125,13 +107,3 @@ public class FastCollinearPoints {
     }
 }
 
-// GO in original natural order
-// for each point in natural order, sort copy using its comparator
-// keep 2 indices and iterate through copy starting at i=j and j=I+3
-// If the slope at i an j is the same, j ++ keep going
-// If the slope is not the same but counter is at 4, maximal line is found
-// take the line from i to j-1, sort by natural order
-// if the origin of the line is the original point chosen make a line segment
-// if not, this line already exists in our line segments
-// now, increment i to where j is and increment j to 3 spaces forward, as long
-// as its part of the array still!
