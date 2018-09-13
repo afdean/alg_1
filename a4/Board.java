@@ -6,6 +6,7 @@ public class Board {
     private int[][] blocks;
     private int ham = -1;
     private int manhattan = -1;
+    private int goal = -1;
 
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
@@ -35,21 +36,14 @@ public class Board {
                 if (blocks[i][j] == 0) {
                     continue;
                 }
-                int correctValue = (i * dim) + j + 1;
-                if (blocks[i][j] != correctValue) {
+                if (blocks[i][j] != calculateCorrect(i, j)) {
                     outOfPlace++;
                 }
             }
         }
 
         ham = outOfPlace;
-
         return ham;
-    }
-
-    private int calculateMan(int x0, int y0, int x1, int y1) {
-        // |x1 - x2| + |y1 - y2|
-        return (Math.abs(x0 - x1) + Math.abs(y0 - y1));
     }
 
     // sum of Manhattan distances between blocks and goal
@@ -83,7 +77,28 @@ public class Board {
     public boolean isGoal() {
         // Iterate in order, return false if one is out, else return true if can
         // get through the loop
-        return false;
+        if (goal >= 0) {
+            if (goal == 0) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                if (blocks[i][j] == 0) {
+                    continue;
+                }
+                if (blocks[i][j] != calculateCorrect(i, j)) {
+                    goal = 0;
+                    return false;
+                }
+            }
+        }
+
+        goal = 1;
+        return true;
     }
 
     // a board that is obtained by exchanging any pair of blocks
@@ -116,6 +131,15 @@ public class Board {
             s.append("\n");
         }
         return s.toString();
+    }
+
+    private int calculateMan(int x0, int y0, int x1, int y1) {
+        // |x1 - x2| + |y1 - y2|
+        return (Math.abs(x0 - x1) + Math.abs(y0 - y1));
+    }
+
+    private int calculateCorrect(int i, int j) {
+        return (i * dim) + j + 1;
     }
 
     // unit tests (not graded)

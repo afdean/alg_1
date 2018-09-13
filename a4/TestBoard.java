@@ -9,6 +9,8 @@ public class TestBoard {
     int[][] blocks2 = new int[2][2];
     int[][] blocks3 = new int[3][3];
     int[][] blocks4 = new int[3][3];
+    int[][] blocks5 = new int[2][2];
+    int[][] blocks6 = new int[3][3];
 
     @Before
     public void setUp() throws Exception {
@@ -16,11 +18,15 @@ public class TestBoard {
         int[] blocks2b = {3, 1, 0, 2};
         int[] blocks3b = {4, 2, 3, 0, 5, 7, 6, 8, 1};
         int[] blocks4b = {0, 8, 6, 3, 4, 7, 2, 1, 5};
+        int[] blocks5b = {1, 2, 3, 0 };
+        int[] blocks6b = {1, 2, 3, 4, 5, 6, 7, 8, 0};
         // int[] blocks4b = {0, 8, 6, 3, 4, 7, 2, 1, 5};
         blocks1 = convertArray(blocks1b);
         blocks2 = convertArray(blocks2b);
         blocks3 = convertArray(blocks3b);
         blocks4 = convertArray(blocks4b);
+        blocks5 = convertArray(blocks5b);
+        blocks6 = convertArray(blocks6b);
         return;
     }
 
@@ -78,6 +84,38 @@ public class TestBoard {
     public void testMan4() {
         Board b = new Board(blocks4);
         Assert.assertEquals(b.manhattan(), 18);
+    }
+
+    // Check if isGoal returns right value
+    @Test
+    public void testGoal1() {
+        Board b = new Board(blocks1);
+        Assert.assertEquals(b.isGoal(), false);
+        Assert.assertEquals(b.isGoal(), false);
+    }
+
+    // Check if isGoal returns right value
+    @Test
+    public void testGoal2() {
+        Board b = new Board(blocks5);
+        Assert.assertEquals(b.isGoal(), true);
+        Assert.assertEquals(b.isGoal(), true);
+    }
+
+    // Check if isGoal returns right value
+    @Test
+    public void testGoal3() {
+        Board b = new Board(blocks3);
+        Assert.assertEquals(b.isGoal(), false);
+        Assert.assertEquals(b.isGoal(), false);
+    }
+
+    // Check if isGoal returns right value
+    @Test
+    public void testGoal4() {
+        Board b = new Board(blocks6);
+        Assert.assertEquals(b.isGoal(), true);
+        Assert.assertEquals(b.isGoal(), true);
     }
 
     private int[][] convertArray(int[] input) {
