@@ -52,6 +52,34 @@ public class TestBoard {
         Assert.assertEquals(b.hamming(), 8);
     }
 
+    // Check if manhattan returns right value
+    @Test
+    public void testMan1() {
+        Board b = new Board(blocks1);
+        Assert.assertEquals(b.manhattan(), 1);
+    }
+
+    // Check if manhattan returns right value
+    @Test
+    public void testMan2() {
+        Board b = new Board(blocks2);
+        Assert.assertEquals(b.manhattan(), 3);
+    }
+
+    // Check if manhattan returns right value
+    @Test
+    public void testMan3() {
+        Board b = new Board(blocks3);
+        Assert.assertEquals(b.manhattan(), 11);
+    }
+
+    // Check if manhattan returns right value
+    @Test
+    public void testMan4() {
+        Board b = new Board(blocks4);
+        Assert.assertEquals(b.manhattan(), 18);
+    }
+
     private int[][] convertArray(int[] input) {
         double inputRoot = Math.sqrt(input.length);
         int dim = (int) inputRoot;
