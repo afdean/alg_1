@@ -103,14 +103,59 @@ public class Board {
 
     // a board that is obtained by exchanging any pair of blocks
     public Board twin() {
-        // Do not swap with a 0
-        return null;
+        // NOTE: Untested
+
+        // Do not swap with a blank block
+        Board twin = new Board(blocks);
+
+        int firstI = -1;
+        int firstJ = -1;
+        int first = -1;
+        int secondI = -1;
+        int secondJ = -1;
+        int second = -1;
+
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                if (twin.blocks[i][j] == 0) {
+                    continue;
+                }
+                if (first < 0) {
+                    firstI = i;
+                    firstJ = j;
+                    first = twin.blocks[i][j];
+                } else if (second < 0) {
+                    secondI = i;
+                    secondJ = j;
+                    second = twin.blocks[i][j];
+                } else {
+                    break;
+                }
+            }
+            if (second >= 0) {
+                break;
+            }
+        }
+
+        twin.blocks[firstI][firstJ] = second;
+        twin.blocks[secondI][secondJ] = first;
+
+        return twin;
     }
 
     // does this board equal y?
     public boolean equals(Object y) {
-        // Same idea as isgoal, but just matching object y
-        return false;
+        // Need to follow java convention nonsense
+
+
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                if (blocks[i][j] != y.blocks[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     // all neighboring boards
