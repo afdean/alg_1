@@ -147,10 +147,23 @@ public class Board {
     public boolean equals(Object y) {
         // Need to follow java convention nonsense
 
+        if (y == this) {
+            return true;
+        }
+
+        if (y == null) {
+            return false;
+        }
+
+        if (y.getClass() != this.getClass()) {
+            return false;
+        }
+
+        Board that = (Board) y;
 
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
-                if (blocks[i][j] != y.blocks[i][j]) {
+                if (blocks[i][j] != that.blocks[i][j]) {
                     return false;
                 }
             }
