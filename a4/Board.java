@@ -105,7 +105,7 @@ public class Board {
 
     // a board that is obtained by exchanging any pair of blocks
     public Board twin() {
-        // NOTE: Untested
+        // NOTE:  Mostly untested
 
         // Do not swap with a blank block
         Board twin = new Board(copyBlocks());
