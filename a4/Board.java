@@ -147,8 +147,6 @@ public class Board {
 
     // does this board equal y?
     public boolean equals(Object y) {
-        // NOTE: Untested
-
         if (y == this) {
             return true;
         }

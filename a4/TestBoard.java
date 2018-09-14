@@ -11,6 +11,7 @@ public class TestBoard {
     int[][] blocks4 = new int[3][3];
     int[][] blocks5 = new int[2][2];
     int[][] blocks6 = new int[3][3];
+    int[][] blocks7 = new int[3][3];
 
     @Before
     public void setUp() throws Exception {
@@ -20,6 +21,7 @@ public class TestBoard {
         int[] blocks4b = {0, 8, 6, 3, 4, 7, 2, 1, 5};
         int[] blocks5b = {1, 2, 3, 0 };
         int[] blocks6b = {1, 2, 3, 4, 5, 6, 7, 8, 0};
+        int[] blocks7b = { 1, 2, 5, 0, 3, 4, 7, 8, 9};
         // int[] blocks4b = {0, 8, 6, 3, 4, 7, 2, 1, 5};
         blocks1 = convertArray(blocks1b);
         blocks2 = convertArray(blocks2b);
@@ -27,6 +29,7 @@ public class TestBoard {
         blocks4 = convertArray(blocks4b);
         blocks5 = convertArray(blocks5b);
         blocks6 = convertArray(blocks6b);
+        blocks7 = convertArray(blocks7b);
         return;
     }
 
@@ -123,6 +126,37 @@ public class TestBoard {
     public void testEquals1() {
         Board b = new Board(blocks6);
         Assert.assertEquals(b.equals(b), true);
+    }
+
+    // Check if equals rejects null
+    @Test
+    public void testEquals2() {
+        Board b = new Board(blocks6);
+        Assert.assertEquals(b.equals(null), false);
+    }
+
+    // Check if equals rejects a different class
+    @Test
+    public void testEquals3() {
+        Board b = new Board(blocks6);
+        Assert.assertEquals(b.equals(new Integer(0)), false);
+    }
+
+    // Check if equals rejects a board that is different in dimension but has
+    // matching component.
+    @Test
+    public void testEquals4() {
+        Board b = new Board(blocks1);
+        Board c = new Board(blocks7);
+        Assert.assertEquals(b.equals(c), false);
+    }
+
+    // Check if equals accepts board with same block configuration
+    @Test
+    public void testEquals4() {
+        Board b = new Board(blocks7);
+        Board c = new Board(blocks7);
+        Assert.assertEquals(b.equals(c), true);
     }
 
     private int[][] convertArray(int[] input) {
