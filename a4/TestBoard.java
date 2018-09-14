@@ -118,6 +118,13 @@ public class TestBoard {
         Assert.assertEquals(b.isGoal(), true);
     }
 
+    // Check if equals matches the exact same board
+    @Test
+    public void testEquals1() {
+        Board b = new Board(blocks6);
+        Assert.assertEquals(b.equals(b), true);
+    }
+
     private int[][] convertArray(int[] input) {
         double inputRoot = Math.sqrt(input.length);
         int dim = (int) inputRoot;

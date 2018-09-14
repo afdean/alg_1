@@ -1,4 +1,6 @@
 import java.lang.Math;
+import java.util.ArrayList;
+import edu.princeton.cs.algs4.Queue;
 
 public class Board {
 
@@ -145,7 +147,7 @@ public class Board {
 
     // does this board equal y?
     public boolean equals(Object y) {
-        // Need to follow java convention nonsense
+        // NOTE: Untested
 
         if (y == this) {
             return true;
@@ -161,6 +163,10 @@ public class Board {
 
         Board that = (Board) y;
 
+        if (that.dim != this.dim) {
+            return false;
+        }
+
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
                 if (blocks[i][j] != that.blocks[i][j]) {
@@ -168,14 +174,61 @@ public class Board {
                 }
             }
         }
+
         return true;
     }
 
-    // all neighboring boards
+    // All possible swaps around empty block
     public Iterable<Board> neighbors() {
-        // At most, 4 neighbors at most only
-        // Find 0, then swap all with 0 going up, left, right, down, if possible;
-        return null;
+        // NOTE: Untested
+
+        int zeroI = -1;
+        int zeroJ = -1;
+
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                if (blocks[i][j] == 0) {
+                    zeroI = i;
+                    zeroJ = j;
+                    break;
+                }
+            }
+            if (zeroI >= 0) {
+                break;
+            }
+        }
+
+        // if (zeroI < 0 || zeroJ < 0) {
+        //     return null;
+        // }
+
+        int swapI;
+        int swapJ;
+        Queue<Board> q = new Queue();
+
+        // Get all possible cases, add to queue, and return
+        for (int a = -1; a <= 1; a += 2) {
+            for (int b = -1; b <= 1; b += 2) {
+                // TODO: Make this cleaner
+                if (a < 0) {
+                    swapI = zeroI + b;
+                    swapJ = zeroJ;
+                } else {
+                    swapJ = zeroJ + b;
+                    swapI = zeroI;
+                }
+
+                // Create board
+                if (swapI >= 0 && swapI <= dim - 1 && swapJ >=0 && swapJ <= dim - 1) {
+                    Board neighbor = new Board(blocks);
+                    neighbor.blocks[zeroI][zeroJ] = neighbor.blocks[swapI][swapJ];
+                    neighbor.blocks[swapI][swapJ] = 0;
+                    q.enqueue(neighbor);
+                }
+            }
+        }
+
+        return q;
     }
 
     // string representation of this board (in the output format specified below)
