@@ -108,7 +108,7 @@ public class Board {
         // NOTE: Untested
 
         // Do not swap with a blank block
-        Board twin = new Board(blocks);
+        Board twin = new Board(copyBlocks());
 
         int firstI = -1;
         int firstJ = -1;
@@ -178,7 +178,6 @@ public class Board {
 
     // All possible swaps around empty block
     public Iterable<Board> neighbors() {
-        // NOTE: Untested
 
         int zeroI = -1;
         int zeroJ = -1;
@@ -205,6 +204,7 @@ public class Board {
         Queue<Board> q = new Queue();
 
         // Get all possible cases, add to queue, and return
+        Board neighbor;
         for (int a = -1; a <= 1; a += 2) {
             for (int b = -1; b <= 1; b += 2) {
                 // TODO: Make this cleaner
@@ -218,7 +218,7 @@ public class Board {
 
                 // Create board
                 if (swapI >= 0 && swapI <= dim - 1 && swapJ >=0 && swapJ <= dim - 1) {
-                    Board neighbor = new Board(blocks);
+                    neighbor = new Board(copyBlocks());
                     neighbor.blocks[zeroI][zeroJ] = neighbor.blocks[swapI][swapJ];
                     neighbor.blocks[swapI][swapJ] = 0;
                     q.enqueue(neighbor);
@@ -249,6 +249,16 @@ public class Board {
 
     private int calculateCorrect(int i, int j) {
         return (i * dim) + j + 1;
+    }
+
+    private int[][] copyBlocks() {
+        int[][] copy = new int[dim][dim];
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                copy[i][j] = blocks[i][j];
+            }
+        }
+        return copy;
     }
 
     // unit tests (not graded)

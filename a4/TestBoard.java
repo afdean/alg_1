@@ -12,6 +12,7 @@ public class TestBoard {
     int[][] blocks5 = new int[2][2];
     int[][] blocks6 = new int[3][3];
     int[][] blocks7 = new int[3][3];
+    int[][] blocks8 = new int[3][3];
 
     @Before
     public void setUp() throws Exception {
@@ -22,6 +23,7 @@ public class TestBoard {
         int[] blocks5b = {1, 2, 3, 0 };
         int[] blocks6b = {1, 2, 3, 4, 5, 6, 7, 8, 0};
         int[] blocks7b = { 1, 2, 5, 0, 3, 4, 7, 8, 9};
+        int[] blocks8b = { 1, 2, 5, 3, 0, 4, 7, 8, 9 };
         // int[] blocks4b = {0, 8, 6, 3, 4, 7, 2, 1, 5};
         blocks1 = convertArray(blocks1b);
         blocks2 = convertArray(blocks2b);
@@ -30,6 +32,7 @@ public class TestBoard {
         blocks5 = convertArray(blocks5b);
         blocks6 = convertArray(blocks6b);
         blocks7 = convertArray(blocks7b);
+        blocks8 = convertArray(blocks8b);
         return;
     }
 
@@ -153,10 +156,49 @@ public class TestBoard {
 
     // Check if equals accepts board with same block configuration
     @Test
-    public void testEquals4() {
+    public void testEquals5() {
         Board b = new Board(blocks7);
         Board c = new Board(blocks7);
         Assert.assertEquals(b.equals(c), true);
+    }
+
+    // Check if neighbors generates queue as prompted for 0 in 4 swap spot
+    @Test
+    public void testNeighbors1() {
+        Board b = new Board(blocks8);
+        Iterable<Board> itr = b.neighbors();
+        for (Board n : itr) {
+            Assert.assertEquals(b.equals(n), false);
+        }
+    }
+
+
+    // Check if neighbors generates queue as prompted for 0 in 2 swap spot
+    @Test
+    public void testNeighbors2() {
+        Board b = new Board(blocks1);
+        Iterable<Board> itr = b.neighbors();
+        for (Board n : itr) {
+            Assert.assertEquals(b.equals(n), false);
+        }
+    }
+
+    // Check if neighbors generates queue as prompted for 0 in 3 swap spot
+    @Test
+    public void testNeighbors3() {
+        Board b = new Board(blocks3);
+        Iterable<Board> itr = b.neighbors();
+        for (Board n : itr) {
+            Assert.assertEquals(b.equals(n), false);
+        }
+    }
+
+    // Check if equals accepts board with same block configuration
+    @Test
+    public void testTwin1() {
+        Board b = new Board(blocks8);
+        Board t = b.twin();
+        Assert.assertEquals(b.equals(t), false);
     }
 
     private int[][] convertArray(int[] input) {
