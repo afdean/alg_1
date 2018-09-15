@@ -43,10 +43,62 @@ public class TestSolver {
         Solver s = new Solver(null);
     }
 
-    // Make sure null input is caught
+    // Check for solutions
     @Test()
     public void testSolver1() {
         Board b = new Board(blocks1);
+        Solver s = new Solver(b);
+        Iterable<Board> soln = s.solution();
+        if (soln != null) {
+            for (Board c : soln) {
+                System.out.println(c);
+            }
+        }
+    }
+
+    // Check for solutions
+    @Test()
+    public void testSolver2() {
+        Board b = new Board(blocks2);
+        Solver s = new Solver(b);
+        Iterable<Board> soln = s.solution();
+        if (soln != null) {
+            for (Board c : soln) {
+                System.out.println(c);
+            }
+        }
+    }
+
+    // Check for solutions
+    @Test()
+    public void testSolver3() {
+        Board b = new Board(blocks3);
+        Solver s = new Solver(b);
+        Iterable<Board> soln = s.solution();
+        if (soln != null) {
+            for (Board c : soln) {
+                System.out.println(c);
+            }
+        }
+    }
+
+    // Check for solutions
+    @Test()
+    public void testSolver4() {
+        Board b = new Board(blocks4);
+        Solver s = new Solver(b);
+        Iterable<Board> soln = s.solution();
+        if (soln != null) {
+            for (Board c : soln) {
+                System.out.println(c);
+            }
+        }
+    }
+
+    // Check for solutions
+    @Test()
+    public void testSolver5() {
+        Board b = new Board(blocks5);
         Solver s = new Solver(b);
         Iterable<Board> soln = s.solution();
         if (soln != null) {
