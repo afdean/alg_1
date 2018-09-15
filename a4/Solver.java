@@ -3,11 +3,35 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Solver {
 
     private boolean solvable;
     private ArrayList<Board> soln;
+    private MinPQ<Node> orgPQ;
+    private MinPQ<Node> twinPQ;
+    private Board initial;
+    private Board twin;
+
+    private class Node implements Comparable<Node> {
+        // include the board, predecessor board, # moves, and compareto
+        // (heuristic + moves)
+        private Board board;
+        private Node predecessor;
+        private int moves;
+
+        private Node(Board board, Node predecessor, int moves) {
+            this.board = board;
+            this.predecessor = predecessor;
+            this.moves = moves;
+        }
+
+        @Override
+        public int compareTo(Node that) {
+            return (board.manhattan() + moves) - (that.board.manhattan() + that.moves);
+        }
+    }
 
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
@@ -16,63 +40,56 @@ public class Solver {
             throw new IllegalArgumentException();
         }
 
-        private class Node implements Comparable<Node> {
-            // include the board, predecessor board, # moves, and compareto
-            // (heuristic + moves)
-            private Board board;
-            private Board predecessor;
-            private int moves;
-
-            private Node(Board board, Board predecessor, int moves) {
-                this.board = board;
-                this.predecessor = predecessor;
-                this.moves = moves;
-            }
-
-            @Override
-            public int compareTo(Node that) {
-                return (board.manhattan() + moves) - (that.board.manhattan() + that.moves);
-            }
-        }
+        this.initial = initial;
 
         // Board to solve in lockstep
-        Board twin = initial.twin();
+        twin = initial.twin();
 
         // Queues for each to run in lockstep
-        MinPQ<Node> orgPQ = new MinPQ<>();
-        MinPQ<Node> twinPQ = new MinPQ<>();
+        orgPQ = new MinPQ<>();
+        twinPQ = new MinPQ<>();
         orgPQ.insert(new Node(initial, null, 0));
         twinPQ.insert(new Node(twin, null, 0));
 
+        // Use flag for debugging
         boolean flag = false;
         Node currentNodeOrg;
         Node currentNodeTwin;
+        Iterable<Board> itrOrg;
+        Iterable<Board> itrTwin;
+        Node newNodeOrg;
+        Node newNodeTwin;
 
         while (flag == false) {
             currentNodeOrg = orgPQ.delMin();
             currentNodeTwin = twinPQ.delMin();
 
+            System.out.println("Something");
+
             if (currentNodeOrg.board.isGoal()) {
                 solvable = true;
                 flag = true;
+                // Set the soln arraylist, reverse it
+                soln = new ArrayList<>();
+                soln.add(currentNodeOrg.board);
+                while (currentNodeOrg.predecessor != null) {
+                    soln.add(currentNodeOrg.predecessor.board);
+                    currentNodeOrg = currentNodeOrg.predecessor;
+                }
+                Collections.reverse(soln);
                 break;
             } else if (currentNodeTwin.board.isGoal()) {
                 solvable = false;
                 flag = true;
                 break;
             }
+
+            itrOrg = currentNodeOrg.board.neighbors();
+            itrTwin = currentNodeTwin.board.neighbors();
+
+            appendQueue(true, itrOrg, currentNodeOrg);
+            appendQueue(false, itrTwin, currentNodeTwin);
         }
-
-        // Set which board solved it
-        // Set the soln arraylist
-        // Just keep going back through predecessors!
-
-        // The key for adding to the queue will be moves + manhattan
-        // To get steps gtaken so far, take key - manhattan then youure good
-
-        // every time you pop from pq, check if its goal
-
-
     }
 
     // is the initial board solvable?
@@ -82,12 +99,36 @@ public class Solver {
 
     // min number of moves to solve initial board; -1 if unsolvable
     public int moves() {
-        return soln.size() - 1;
+        if (solvable) {
+            return soln.size() - 1;
+        } else {
+            return -1;
+        }
     }
 
     // sequence of boards in a shortest solution; null if unsolvable
     public Iterable<Board> solution() {
-        return soln;
+        // TODO: Check if this is just for initial
+        if (solvable) {
+            return soln;
+        } else {
+            return null;
+        }
+    }
+
+    private void appendQueue(boolean original, Iterable<Board> itr, Node currentNode) {
+        Node newNode;
+        for (Board b : itr) {
+            if (!b.equals(currentNode.predecessor)) {
+                newNode = new Node(b, currentNode, currentNode.moves + 1);
+                if (original) {
+                    orgPQ.insert(newNode);
+                } else {
+                    twinPQ.insert(newNode);
+                }
+
+            }
+        }
     }
 
     public static void main(String[] args) {

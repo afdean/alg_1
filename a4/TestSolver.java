@@ -43,6 +43,19 @@ public class TestSolver {
         Solver s = new Solver(null);
     }
 
+    // Make sure null input is caught
+    @Test()
+    public void testSolver1() {
+        Board b = new Board(blocks1);
+        Solver s = new Solver(b);
+        Iterable<Board> soln = s.solution();
+        if (soln != null) {
+            for (Board c : soln) {
+                System.out.println(c);
+            }
+        }
+    }
+
     private int[][] convertArray(int[] input) {
         double inputRoot = Math.sqrt(input.length);
         int dim = (int) inputRoot;
