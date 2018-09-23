@@ -17,6 +17,7 @@ public class KdTree {
             this.p = p;
             this.rect = rect;
         }
+
     }
 
     // construct an empty set of points
@@ -36,41 +37,71 @@ public class KdTree {
 
     // add the point to the set (if it is not already in the set)
     public void insert(Point2D p) {
-        // TODO: First, don't include duplicates by checking with contains
+        if (contains(p)) {
+            return;
+        }
         root = insert(root, p, true);
         size++;
     }
 
-    private Node insert(Node n, Point2D p, Boolean horizontal) {
-        // TODO: Implement rect portion
-        if (n == null) {
-            return new Node(p, null);
-        }
-        int comparison;
+    // Substitute for writing comp
+    private int compare2D(Node n, Point2D p, Boolean horizontal) {
         if (horizontal) {
             if (p.x() < n.p.x()) {
-                comparison = -1;
+                return -1;
             } else {
-                comparison = 1;
+                return 1;
             }
         } else {
             if (p.y() < n.p.y()) {
-                comparison = -1;
+                return -1;
             } else {
-                comparison = 1;
+                return 1;
             }
         }
+    }
+
+    private Node insert(Node n, Point2D p, Boolean horizontal) {
+        // Return node where leaf is found
+        if (n == null) {
+            return new Node(p, null);
+        }
+
+        // Make the decision on where to add node
+        int comparison = compare2D(n, p, horizontal);
+
+        // Add node to left/bottom or right/top
         if (comparison < 0) {
             n.lb = insert(n.lb, p, !horizontal);
         } else if (comparison > 0) {
             n.rt = insert(n.rt, p, !horizontal);
         }
+
         return n;
     }
 
     // does the set contain point p?
     public boolean contains(Point2D p) {
-        return false;
+        return get(p) != null;
+    }
+
+    private Point2D get(Point2D p) {
+        return get(root, p, true);
+    }
+
+    private Point2D get(Node n, Point2D p, Boolean horizontal) {
+        if (n == null) {
+            return null;
+        }
+        if (n.p.equals(p)) {
+            return p;
+        }
+        int comparison = compare2D(n, p, horizontal);
+        if (comparison < 0) {
+            return get(n.lb, p, !horizontal);
+        } else {
+            return get(n.rt, p, !horizontal);
+        }
     }
 
     // draw all points to standard draw
