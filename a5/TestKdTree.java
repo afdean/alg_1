@@ -104,6 +104,6 @@ public class TestKdTree {
         k.insert(pt5);
         k.draw();
         StdDraw.show();
-        StdDraw.pause(20000);
+        StdDraw.pause(200000000);
     }
 }

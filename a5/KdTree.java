@@ -162,12 +162,12 @@ public class KdTree {
             }
 
             // TODO: Use rect of n and point from previous node to determine boundaries
-            StdDraw.line(n.p.x(), 0, n.p.x(), 1);
+            StdDraw.line(n.p.x(), n.rect.ymin(), n.p.x(), n.rect.ymax());
         } else {
             StdDraw.setPenColor(StdDraw.BLUE);
 
             // TODO: Use rect of n and point from previous node to determine boundaries
-            StdDraw.line(0, n.p.y(), 1, n.p.y());
+            StdDraw.line(n.rect.xmin(), n.p.y(), n.rect.xmax(), n.p.y());
         }
 
         // Draw the children
