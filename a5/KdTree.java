@@ -1,6 +1,7 @@
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.SET;
+import edu.princeton.cs.algs4.StdDraw;
 
 public class KdTree {
 
@@ -16,6 +17,21 @@ public class KdTree {
         private Node(Point2D p, RectHV rect) {
             this.p = p;
             this.rect = rect;
+        }
+
+    }
+
+    private static class RectDim {
+        private double xmin; // the point
+        private double xmax; // the axis-aligned rectangle corresponding to this node
+        private double ymin; // the left/bottom subtree
+        private double ymax; // the right/top subtree
+
+        private RectDim(double xmin, double ymin, double xmax, double ymax) {
+            this.xmin = xmin;
+            this.ymin = ymin;
+            this.xmax = xmax;
+            this.ymax = ymax;
         }
 
     }
@@ -40,11 +56,13 @@ public class KdTree {
         if (contains(p)) {
             return;
         }
-        root = insert(root, p, true);
+        RectDim rd = new RectDim(0, 0, 1, 1);
+        root = insert(root, p, true, rd);
         size++;
     }
 
     // Substitute for writing comp
+    // Horizontal refers to whether or not next point is l/r inserted
     private int compare2D(Node n, Point2D p, Boolean horizontal) {
         if (horizontal) {
             if (p.x() < n.p.x()) {
@@ -61,10 +79,11 @@ public class KdTree {
         }
     }
 
-    private Node insert(Node n, Point2D p, Boolean horizontal) {
+    private Node insert(Node n, Point2D p, Boolean horizontal, RectDim rd) {
         // Return node where leaf is found
         if (n == null) {
-            return new Node(p, null);
+            RectHV rect = new RectHV(rd.xmin, rd.ymin, rd.xmax, rd.ymax);
+            return new Node(p, rect);
         }
 
         // Make the decision on where to add node
@@ -72,9 +91,23 @@ public class KdTree {
 
         // Add node to left/bottom or right/top
         if (comparison < 0) {
-            n.lb = insert(n.lb, p, !horizontal);
+            // Update rd
+            if (horizontal) {
+                rd.xmax = n.p.x();
+            }
+            if (!horizontal) {
+                rd.ymax = n.p.y();
+            }
+            n.lb = insert(n.lb, p, !horizontal, rd);
         } else if (comparison > 0) {
-            n.rt = insert(n.rt, p, !horizontal);
+            // Update rd
+            if (horizontal) {
+                rd.xmin = n.p.x();
+            }
+            if (!horizontal) {
+                rd.ymin = n.p.y();
+            }
+            n.rt = insert(n.rt, p, !horizontal, rd);
         }
 
         return n;
@@ -106,7 +139,40 @@ public class KdTree {
 
     // draw all points to standard draw
     public void draw() {
+        Boolean red = true;
+        drawPoint(root, null, red);
+    }
 
+    private void drawPoint(Node n, Node previous, Boolean red) {
+        if (n == null) {
+            return;
+        }
+        // Draw the point
+        StdDraw.setPenColor(StdDraw.BLACK);
+        StdDraw.setPenRadius(0.01);
+        StdDraw.point(n.p.x(), n.p.y());
+
+        // Draw the line
+        StdDraw.setPenRadius();
+        // line(double x1, double y1, double x2, double y2)
+        if (red) {
+            StdDraw.setPenColor(StdDraw.RED);
+            if (previous == null) {
+                StdDraw.line(n.p.x(), 0, n.p.x(), 1);
+            }
+
+            // TODO: Use rect of n and point from previous node to determine boundaries
+            StdDraw.line(n.p.x(), 0, n.p.x(), 1);
+        } else {
+            StdDraw.setPenColor(StdDraw.BLUE);
+
+            // TODO: Use rect of n and point from previous node to determine boundaries
+            StdDraw.line(0, n.p.y(), 1, n.p.y());
+        }
+
+        // Draw the children
+        drawPoint(n.lb, n, !red);
+        drawPoint(n.rt, n, !red);
     }
 
     // all points that are inside the rectangle (or on the boundary)

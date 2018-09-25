@@ -92,4 +92,18 @@ public class TestKdTree {
         k.insert(pt5);
         Assert.assertEquals(k.contains(pt5), true);
     }
+
+    //
+    @Test
+    public void testDraw1() {
+        KdTree k = new KdTree();
+        k.insert(pt1);
+        k.insert(pt2);
+        k.insert(pt3);
+        k.insert(pt4);
+        k.insert(pt5);
+        k.draw();
+        StdDraw.show();
+        StdDraw.pause(20000);
+    }
 }
