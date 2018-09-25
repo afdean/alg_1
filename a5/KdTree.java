@@ -2,6 +2,7 @@ import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.SET;
 import edu.princeton.cs.algs4.StdDraw;
+import java.util.ArrayList;
 
 public class KdTree {
 
@@ -140,13 +141,14 @@ public class KdTree {
     // draw all points to standard draw
     public void draw() {
         Boolean red = true;
-        drawPoint(root, null, red);
+        drawPoint(root, red);
     }
 
-    private void drawPoint(Node n, Node previous, Boolean red) {
+    private void drawPoint(Node n, Boolean red) {
         if (n == null) {
             return;
         }
+
         // Draw the point
         StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.setPenRadius(0.01);
@@ -154,30 +156,44 @@ public class KdTree {
 
         // Draw the line
         StdDraw.setPenRadius();
-        // line(double x1, double y1, double x2, double y2)
         if (red) {
             StdDraw.setPenColor(StdDraw.RED);
-            if (previous == null) {
-                StdDraw.line(n.p.x(), 0, n.p.x(), 1);
-            }
-
-            // TODO: Use rect of n and point from previous node to determine boundaries
             StdDraw.line(n.p.x(), n.rect.ymin(), n.p.x(), n.rect.ymax());
         } else {
             StdDraw.setPenColor(StdDraw.BLUE);
-
-            // TODO: Use rect of n and point from previous node to determine boundaries
             StdDraw.line(n.rect.xmin(), n.p.y(), n.rect.xmax(), n.p.y());
         }
 
         // Draw the children
-        drawPoint(n.lb, n, !red);
-        drawPoint(n.rt, n, !red);
+        drawPoint(n.lb, !red);
+        drawPoint(n.rt, !red);
     }
 
     // all points that are inside the rectangle (or on the boundary)
     public Iterable<Point2D> range(RectHV rect) {
-        return null;
+        ArrayList<Point2D> points = new ArrayList<>();
+        range(root, rect, points);
+        return points;
+    }
+
+    private void range(Node n, RectHV rect, ArrayList<Point2D> points) {
+        if (n == null) {
+            return;
+        }
+
+        // if node intersects, then add nodes point, if not, return
+        if (!n.rect.intersects(rect)) {
+            return;
+        }
+
+        // Check if point is in the rect
+        if (rect.contains(n.p)) {
+            points.add(n.p);
+        }
+
+        // Check the children
+        range(n.lb, rect, points);
+        range(n.rt, rect, points);
     }
 
     // a nearest neighbor in the set to point p; null if the set is empty

@@ -4,6 +4,7 @@ import org.junit.Test;
 import java.lang.Math;
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
+import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
 import java.util.ArrayList;
 
@@ -95,15 +96,31 @@ public class TestKdTree {
 
     //
     @Test
-    public void testDraw1() {
+    public void testIntersects1() {
         KdTree k = new KdTree();
         k.insert(pt1);
         k.insert(pt2);
         k.insert(pt3);
         k.insert(pt4);
         k.insert(pt5);
-        k.draw();
-        StdDraw.show();
-        StdDraw.pause(200000000);
+        RectHV rect = new RectHV(0, 0, 0.25, 0.25);
+        Iterable<Point2D> pts = k.range(rect);
+        for (Point2D p : pts) {
+            System.out.println(p);
+        }
     }
+
+    // //
+    // @Test
+    // public void testDraw1() {
+    //     KdTree k = new KdTree();
+    //     k.insert(pt1);
+    //     k.insert(pt2);
+    //     k.insert(pt3);
+    //     k.insert(pt4);
+    //     k.insert(pt5);
+    //     k.draw();
+    //     StdDraw.show();
+    //     StdDraw.pause(200000000);
+    // }
 }
