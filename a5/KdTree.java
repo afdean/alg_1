@@ -8,6 +8,7 @@ public class KdTree {
 
     private Node root;
     private int size;
+    private Point2D nearest;
 
     private static class Node {
         private Point2D p; // the point
@@ -181,12 +182,12 @@ public class KdTree {
             return;
         }
 
-        // if node intersects, then add nodes point, if not, return
+        // if node rect doesn't intersect, no need to continue going in depth
         if (!n.rect.intersects(rect)) {
             return;
         }
 
-        // Check if point is in the rect
+        // Add if point is in the rect
         if (rect.contains(n.p)) {
             points.add(n.p);
         }
@@ -198,7 +199,46 @@ public class KdTree {
 
     // a nearest neighbor in the set to point p; null if the set is empty
     public Point2D nearest(Point2D p) {
-        return null;
+        // TODO: A better way than using a global variable...
+        nearest = null;
+        Boolean horizontal = true;
+        nearest(root, p, horizontal);
+        return nearest;
+    }
+
+    // a nearest neighbor in the set to point p; null if the set is empty
+    private void nearest(Node n, Point2D p, Boolean horizontal) {
+        // NOTE: USING DISTANCESQUARED ALWAYS
+
+        if (n == null) {
+            return;
+        }
+
+        if (nearest == null) {
+            nearest = n.p;
+        }
+
+        // Pruning optimization
+        // If everything in this subtree is farther than the nearest found
+        // already, don't bother.
+        if (n.rect.distanceSquaredTo(p) > nearest.distanceSquaredTo(p)) {
+            return;
+        }
+
+        // Check node's current point is closer
+        if (n.p.distanceSquaredTo(p) < nearest.distanceSquaredTo(p)) {
+            nearest = n.p;
+        }
+
+        // Optimize search order
+        int comparison = compare2D(n, p, horizontal);
+        if (comparison < 0) {
+            nearest(n.lb, p, !horizontal);
+            nearest(n.rt, p, !horizontal);
+        } else {
+            nearest(n.rt, p, !horizontal);
+            nearest(n.lb, p, !horizontal);
+        }
     }
 
     // unit testing of the methods (optional)

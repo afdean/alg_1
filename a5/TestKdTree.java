@@ -105,9 +105,23 @@ public class TestKdTree {
         k.insert(pt5);
         RectHV rect = new RectHV(0, 0, 0.25, 0.25);
         Iterable<Point2D> pts = k.range(rect);
-        for (Point2D p : pts) {
-            System.out.println(p);
-        }
+        // for (Point2D p : pts) {
+        //     System.out.println(p);
+        // }
+    }
+
+    //
+    @Test
+    public void testNearest1() {
+        KdTree k = new KdTree();
+        k.insert(pt1);
+        k.insert(pt2);
+        k.insert(pt3);
+        k.insert(pt4);
+        k.insert(pt5);
+        Point2D pt = new Point2D(0.5, 0.5);
+        Point2D nearest = k.nearest(pt);
+        Assert.assertEquals(nearest, pt4);
     }
 
     // //
