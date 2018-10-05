@@ -44,7 +44,6 @@ public class SAP {
             return -1;
         }
 
-
         return bfsV.distTo(ancestor) + bfsW.distTo(ancestor);
     }
 
@@ -96,7 +95,22 @@ public class SAP {
                 throw new IllegalArgumentException();
             }
         }
-        return -1;
+
+        // Just do a repeated run of length basically itereated thorugh all of
+        // them
+        int length = -1;
+        for (Integer vInt : v) {
+            for (Integer wInt : w) {
+                int loopLength = length(vInt.intValue(), wInt.intValue());
+                if (length == -1) {
+                    length = loopLength;
+                } else if (loopLength > -1 && loopLength < length) {
+                    length = loopLength;
+                }
+            }
+        }
+
+        return length;
     }
 
     // a common ancestor that participates in shortest ancestral path; -1 if no such path
@@ -110,6 +124,27 @@ public class SAP {
             if (iterated == null || !isValidVertex(iterated)) {
                 throw new IllegalArgumentException();
             }
+        }
+
+        // TODO: Fix duplicate code
+        int length = -1;
+        int v = -1;
+        int w = -1;
+        for (Integer vInt : v) {
+            for (Integer wInt : w) {
+                int loopLength = length(vInt.intValue(), wInt.intValue());
+                if (length == -1) {
+                    length = loopLength;
+                } else if (loopLength > -1 && loopLength < length) {
+                    length = loopLength;
+                    v = vInt.intValue();
+                    w = wInt.intValue();
+                }
+            }
+        }
+
+        if (v != -1 && w != 1) {
+            return ancestor(v, w);
         }
         return -1;
     }
